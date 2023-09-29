@@ -1,5 +1,5 @@
 [workspace]
 members = [
-    "shader_sandbox",
+    "shader_basic_static",
 ]
 resolver = "2"
