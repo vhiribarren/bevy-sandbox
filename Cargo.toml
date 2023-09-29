@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "shader_sandbox",
+]
+resolver = "2"
