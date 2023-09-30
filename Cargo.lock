@@ -2779,6 +2779,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "shader_basic_dynamic_update"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
 name = "shader_basic_hotreload"
 version = "0.1.0"
 dependencies = [
