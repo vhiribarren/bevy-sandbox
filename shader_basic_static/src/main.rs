@@ -39,7 +39,7 @@ fn on_resize_system(
     mut q_transform: Query<&mut Transform, With<Canvas>>,
     mut e_resize: EventReader<WindowResized>,
 ) {
-    if e_resize.len() == 0 {
+    if e_resize.is_empty() {
         return;
     }
     let size = e_resize.iter().next().unwrap();
