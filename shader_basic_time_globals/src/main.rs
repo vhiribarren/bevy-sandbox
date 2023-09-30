@@ -14,7 +14,6 @@ fn main() {
         ))
         .add_systems(Startup, setup_system)
         .add_systems(Update, on_resize_system)
-        .add_systems(Update, update_shader)
         .run();
 }
 
@@ -36,12 +35,6 @@ fn setup_system(
         .insert(Canvas);
 }
 
-fn update_shader(time: Res<Time>, mut materials: ResMut<Assets<CustomMaterial>>) {
-    materials.iter_mut().for_each(|material| {
-        material.1.time = time.elapsed_seconds();
-    });
-}
-
 fn on_resize_system(
     mut q_transform: Query<&mut Transform, With<Canvas>>,
     mut e_resize: EventReader<WindowResized>,
@@ -56,13 +49,10 @@ fn on_resize_system(
 
 #[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone, Default)]
 #[uuid = "3bb72d82-d404-42e1-b225-2b1debd79518"]
-struct CustomMaterial {
-    #[uniform(0)]
-    time: f32,
-}
+struct CustomMaterial {}
 
 impl Material2d for CustomMaterial {
     fn fragment_shader() -> ShaderRef {
-        "shader_basic_time.wgsl".into()
+        "shader_basic_time_globals.wgsl".into()
     }
 }
