@@ -1,5 +1,5 @@
 [package]
-name = "shader_basic_time_uniform"
+name = "shader_frg_basic_dynamic_update"
 version = "0.1.0"
 edition = "2021"
 

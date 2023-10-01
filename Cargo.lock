@@ -2779,35 +2779,35 @@ dependencies = [
 ]
 
 [[package]]
-name = "shader_basic_dynamic_update"
+name = "shader_frg_basic_dynamic_update"
 version = "0.1.0"
 dependencies = [
  "bevy",
 ]
 
 [[package]]
-name = "shader_basic_hotreload"
+name = "shader_frg_basic_hot_reload"
 version = "0.1.0"
 dependencies = [
  "bevy",
 ]
 
 [[package]]
-name = "shader_basic_static"
+name = "shader_frg_basic_static"
 version = "0.1.0"
 dependencies = [
  "bevy",
 ]
 
 [[package]]
-name = "shader_basic_time_globals"
+name = "shader_frg_basic_time_globals"
 version = "0.1.0"
 dependencies = [
  "bevy",
 ]
 
 [[package]]
-name = "shader_basic_time_uniform"
+name = "shader_frg_basic_time_uniform"
 version = "0.1.0"
 dependencies = [
  "bevy",

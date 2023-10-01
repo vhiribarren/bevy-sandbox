@@ -1,9 +1,9 @@
 [workspace]
 members = [
-    "shader_basic_static",
-    "shader_basic_time_uniform",
-    "shader_basic_time_globals",
-    "shader_basic_hotreload",
-    "shader_basic_dynamic_update",
+    "shader_frg_basic_static",
+    "shader_frg_basic_time_uniform",
+    "shader_frg_basic_time_globals",
+    "shader_frg_basic_hot_reload",
+    "shader_frg_basic_dynamic_update",
 ]
 resolver = "2"

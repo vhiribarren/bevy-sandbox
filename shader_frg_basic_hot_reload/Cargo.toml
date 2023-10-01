@@ -1,5 +1,5 @@
 [package]
-name = "shader_basic_time_globals"
+name = "shader_frg_basic_hot_reload"
 version = "0.1.0"
 edition = "2021"
 
