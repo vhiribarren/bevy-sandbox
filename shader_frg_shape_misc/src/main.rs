@@ -29,26 +29,54 @@ use bevy::{
     sprite::{Material2d, Material2dPlugin, MaterialMesh2dBundle},
     window::WindowResized,
 };
+use bevy_egui::{egui, EguiContexts, EguiPlugin};
+
+const SHADER_CHOICE: &[ShaderInput] = &[
+    ShaderInput {
+        name: "Animated cosinus",
+        file: "shader_shape_cos_anim.wgsl",
+    },
+    ShaderInput {
+        name: "Square",
+        file: "shader_shape_square.wgsl",
+    },
+];
 
 fn main() {
     App::new()
+        .insert_resource(ShaderChoice(&SHADER_CHOICE[0]))
         .add_plugins((
             DefaultPlugins,
             Material2dPlugin::<CustomMaterial>::default(),
         ))
+        .add_plugins(EguiPlugin)
         .add_systems(Startup, setup_system)
         .add_systems(Update, on_resize_system)
+        .add_systems(Update, system_gui)
         .run();
 }
+
+#[derive(PartialEq)]
+struct ShaderInput {
+    name: &'static str,
+    file: &'static str,
+}
+
+#[derive(Resource)]
+struct ShaderChoice(&'static ShaderInput);
 
 #[derive(Component)]
 struct Canvas;
 
 fn setup_system(
     mut commands: Commands,
+    mut contexts: EguiContexts,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<CustomMaterial>>,
 ) {
+    contexts
+        .ctx_mut()
+        .set_visuals(egui::style::Visuals::light());
     commands.spawn(Camera2dBundle::default());
     commands
         .spawn(MaterialMesh2dBundle {
@@ -69,6 +97,21 @@ fn on_resize_system(
     let size = e_resize.iter().next().unwrap();
     let mut transform = q_transform.single_mut();
     *transform = Transform::default().with_scale(Vec3::new(size.width, size.height, 1.0));
+}
+
+fn system_gui(mut contexts: EguiContexts, mut shader_choice: ResMut<ShaderChoice>) {
+    let ctx = contexts.ctx_mut();
+    egui::Window::new("Shader shapes")
+        .resizable(false)
+        .show(ctx, |ui| {
+            egui::ComboBox::from_label("Select shape")
+                .selected_text(shader_choice.0.name)
+                .show_ui(ui, |ui| {
+                    for choice in SHADER_CHOICE {
+                        ui.selectable_value(&mut shader_choice.0, choice, choice.name);
+                    }
+                });
+        });
 }
 
 #[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone)]
