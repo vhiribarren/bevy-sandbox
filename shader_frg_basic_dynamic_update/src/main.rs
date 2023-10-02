@@ -37,7 +37,7 @@ const DYNAMIC_SHADER_HANDLE: HandleUntyped =
     HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 13828845128402094821);
 
 const SHADER_RED: &str = r#"
-#import bevy_pbr::mesh_vertex_output MeshVertexOutput
+#import bevy_sprite::mesh2d_vertex_output  MeshVertexOutput
 @fragment
 fn fragment(in: MeshVertexOutput) -> @location(0) vec4<f32> {
     return vec4<f32>(1.0, 0.0, 0.0, 1.0);
@@ -45,7 +45,7 @@ fn fragment(in: MeshVertexOutput) -> @location(0) vec4<f32> {
 "#;
 
 const SHADER_BLUE: &str = r#"
-#import bevy_pbr::mesh_vertex_output MeshVertexOutput
+#import bevy_sprite::mesh2d_vertex_output  MeshVertexOutput
 @fragment
 fn fragment(in: MeshVertexOutput) -> @location(0) vec4<f32> {
     return vec4<f32>(0.0, 0.0, 1.0, 1.0);

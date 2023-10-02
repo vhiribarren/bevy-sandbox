@@ -1,5 +1,4 @@
-
-#import bevy_pbr::mesh_vertex_output MeshVertexOutput
+#import bevy_sprite::mesh2d_vertex_output  MeshVertexOutput
 
 struct CustomMaterial {
     time: f32,

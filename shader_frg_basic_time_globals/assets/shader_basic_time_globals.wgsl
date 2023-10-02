@@ -1,4 +1,4 @@
-#import bevy_pbr::mesh_vertex_output MeshVertexOutput
+#import bevy_sprite::mesh2d_vertex_output  MeshVertexOutput
 #import bevy_render::globals Globals
 
 @group(0) @binding(1)
