@@ -1,8 +1,5 @@
 #import bevy_sprite::mesh2d_vertex_output  MeshVertexOutput
-#import bevy_render::globals Globals
-
-@group(0) @binding(1)
-var<uniform> globals: Globals;
+#import bevy_sprite::mesh2d_view_bindings globals
 
 @fragment
 fn fragment(in: MeshVertexOutput) -> @location(0) vec4<f32> {
