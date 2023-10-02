@@ -6,5 +6,6 @@ members = [
     "shader_frg_basic_hot_reload",
     "shader_frg_basic_dynamic_update",
     "shader_frg_basic_vertex_control",
+    "shader_frg_shape_misc",
 ]
 resolver = "2"
