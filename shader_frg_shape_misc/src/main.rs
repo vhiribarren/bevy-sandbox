@@ -30,6 +30,7 @@ use bevy::{
     window::WindowResized,
 };
 use bevy_egui::{egui, EguiContexts, EguiPlugin};
+use std::fs;
 
 const SHADER_CHOICE: &[ShaderInput] = &[
     ShaderInput {
@@ -56,6 +57,9 @@ fn main() {
         .run();
 }
 
+const DYNAMIC_SHADER_HANDLE: HandleUntyped =
+    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 13828845128402094821);
+
 #[derive(PartialEq)]
 struct ShaderInput {
     name: &'static str,
@@ -73,6 +77,8 @@ fn setup_system(
     mut contexts: EguiContexts,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<CustomMaterial>>,
+    shaders: ResMut<Assets<Shader>>,
+    shader_choice: ResMut<ShaderChoice>,
 ) {
     contexts
         .ctx_mut()
@@ -85,6 +91,7 @@ fn setup_system(
             ..default()
         })
         .insert(Canvas);
+    load_shader(&shader_choice, shaders)
 }
 
 fn on_resize_system(
@@ -99,8 +106,13 @@ fn on_resize_system(
     *transform = Transform::default().with_scale(Vec3::new(size.width, size.height, 1.0));
 }
 
-fn system_gui(mut contexts: EguiContexts, mut shader_choice: ResMut<ShaderChoice>) {
+fn system_gui(
+    mut contexts: EguiContexts,
+    mut shader_choice: ResMut<ShaderChoice>,
+    shaders: ResMut<Assets<Shader>>,
+) {
     let ctx = contexts.ctx_mut();
+    let shader_choice_init = shader_choice.0;
     egui::Window::new("Shader shapes")
         .resizable(false)
         .show(ctx, |ui| {
@@ -112,6 +124,26 @@ fn system_gui(mut contexts: EguiContexts, mut shader_choice: ResMut<ShaderChoice
                     }
                 });
         });
+    if shader_choice_init != shader_choice.0 {
+        load_shader(&shader_choice, shaders);
+    }
+}
+
+fn load_shader(shader_choice: &ShaderChoice, mut shaders: ResMut<Assets<Shader>>) {
+    let shader_path = std::path::Path::new(file!())
+        .ancestors()
+        .nth(2)
+        .unwrap()
+        .join("assets")
+        .join(shader_choice.0.file);
+    info!("Loading {shader_path:?}");
+    shaders.set_untracked(
+        DYNAMIC_SHADER_HANDLE,
+        Shader::from_wgsl(
+            fs::read_to_string(shader_path).unwrap(),
+            shader_choice.0.file,
+        ),
+    );
 }
 
 #[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone)]
@@ -120,6 +152,6 @@ struct CustomMaterial {}
 
 impl Material2d for CustomMaterial {
     fn fragment_shader() -> ShaderRef {
-        "shader_shape_cos_anim.wgsl".into()
+        DYNAMIC_SHADER_HANDLE.typed().into()
     }
 }
