@@ -34,12 +34,16 @@ use std::fs;
 
 const SHADER_CHOICE: &[ShaderInput] = &[
     ShaderInput {
-        name: "Animated cosinus",
-        file: "shader_shape_cos_anim.wgsl",
+        name: "Triangle",
+        file: "shader_shape_triangle.wgsl",
     },
     ShaderInput {
         name: "Square",
         file: "shader_shape_square.wgsl",
+    },
+    ShaderInput {
+        name: "Animated cosinus",
+        file: "shader_shape_cos_anim.wgsl",
     },
 ];
 

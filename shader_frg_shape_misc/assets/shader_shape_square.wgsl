@@ -1,9 +1,6 @@
 #import bevy_sprite::mesh2d_vertex_output MeshVertexOutput
 #import bevy_sprite::mesh2d_view_bindings globals
 
-const CURVE_COLOR =  vec4<f32>(1.0, 0.0, 0.0, 1.0);
-const BACKGROUND_COLOR = vec4<f32>(0.5, 0.5, 0.8, 1.0);
-
 fn draw_cube(top_left: vec2<f32>, width: f32, height: f32, current_pos: vec2<f32>) -> f32 {
     let bottom_right = top_left + vec2(width, height);
     let tl_pixels = step(top_left, current_pos);
