@@ -7,5 +7,6 @@ members = [
     "shader_frg_basic_dynamic_update",
     "shader_frg_basic_vertex_control",
     "shader_frg_shape_misc",
+    "shader_frg_noise",
 ]
 resolver = "2"

@@ -3022,6 +3022,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "shader_frg_noise"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_egui",
+]
+
+[[package]]
 name = "shader_frg_shape_misc"
 version = "0.1.0"
 dependencies = [
