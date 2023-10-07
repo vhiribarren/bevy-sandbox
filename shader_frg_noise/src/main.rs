@@ -99,6 +99,6 @@ impl Default for CustomMaterial {
 
 impl Material2d for CustomMaterial {
     fn fragment_shader() -> ShaderRef {
-        "white_noise.wgsl".into()
+        "value_noise.wgsl".into()
     }
 }
