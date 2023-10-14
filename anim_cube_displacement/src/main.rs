@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-use std::ops::Range;
+use std::{array, ops::Range};
 
 use bevy::{
     diagnostic::{
@@ -34,6 +34,13 @@ use bevy::{
 use rand::Rng;
 use std::f32::consts::PI;
 
+const PERIOD_RANGE: Range<f32> = 1.0..30.0;
+const PHASE_RANGE: Range<f32> = 0.0..PI / 2.0;
+const AMPLITUDE_RANGE: Range<f32> = 0.8..2.0;
+const X_MAX: u32 = 50;
+const Y_MAX: u32 = 50;
+const Z_MAX: u32 = 2;
+
 fn main() {
     App::new()
         .add_plugins((
@@ -44,36 +51,51 @@ fn main() {
             SystemInformationDiagnosticsPlugin,
         ))
         .add_systems(Startup, setup)
+        .add_systems(Update, move_cubes)
         .run();
 }
 
-const DISPLACEMENT_RANGE: Range<f32> = -0.2..0.2;
-const X_MAX: u32 = 50;
-const Y_MAX: u32 = 50;
-const Z_MAX: u32 = 2;
+#[derive(Component)]
+struct Cube;
+
+#[derive(Component)]
+struct Displacement {
+    orig: Vec3,
+    period: Vec3,
+    phase: Vec3,
+    amplitude: Vec3,
+}
 
 fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let mut rng = rand::thread_rng();
-    let mut displacement = || rng.gen_range(DISPLACEMENT_RANGE);
+    let gen_period = || rand::thread_rng().gen_range(PERIOD_RANGE);
+    let gen_phase = || rand::thread_rng().gen_range(PHASE_RANGE);
+    let gen_amplitude = || rand::thread_rng().gen_range(AMPLITUDE_RANGE);
     let mesh = meshes.add(Mesh::from(shape::Cube { size: 0.9 }));
     let material = materials.add(Color::rgb(0.8, 0.8, 0.8).into());
     for x in 0..X_MAX {
         for y in 0..Y_MAX {
             for z in -(Z_MAX as i32)..0 {
-                commands.spawn(PbrBundle {
-                    mesh: mesh.clone(),
-                    material: material.clone(),
-                    transform: Transform::from_xyz(
-                        displacement() + x as f32,
-                        displacement() + y as f32,
-                        displacement() + z as f32,
-                    ),
-                    ..default()
-                });
+                let (x, y, z) = (x as f32, y as f32, z as f32);
+                let displacement = Displacement {
+                    orig: Vec3 { x, y, z },
+                    period: Vec3::from_array(array::from_fn(|_| gen_period())),
+                    phase: Vec3::from_array(array::from_fn(|_| gen_phase())),
+                    amplitude: Vec3::from_array(array::from_fn(|_| gen_amplitude())),
+                };
+                commands.spawn((
+                    PbrBundle {
+                        mesh: mesh.clone(),
+                        material: material.clone(),
+                        transform: Transform::from_xyz(x, y, z),
+                        ..default()
+                    },
+                    Cube,
+                    displacement,
+                ));
             }
         }
     }
@@ -112,4 +134,17 @@ fn setup(
         ),
         ..default()
     });
+}
+
+fn move_cubes(
+    mut q_transforms: Query<(&mut Transform, &Displacement), With<Cube>>,
+    time: Res<Time>,
+) {
+    for (mut transform, d) in &mut q_transforms {
+        let offset = Vec3::from_array(array::from_fn(|idx| {
+            d.amplitude[idx]
+                * (time.elapsed_seconds() * 2.0 * PI / d.period[idx] + d.phase[idx]).sin()
+        }));
+        transform.translation = d.orig + offset;
+    }
 }
