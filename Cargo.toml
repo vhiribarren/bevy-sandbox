@@ -8,5 +8,6 @@ members = [
     "shader_frg_basic_vertex_control",
     "shader_frg_shape_misc",
     "shader_frg_noise",
+    "anim_cube_displacement",
 ]
 resolver = "2"
