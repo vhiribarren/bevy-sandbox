@@ -3028,6 +3028,7 @@ name = "shader_frg_basic_dynamic_update"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "shader_frg_viewer_plugin",
 ]
 
 [[package]]
@@ -3035,6 +3036,7 @@ name = "shader_frg_basic_hot_reload"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "shader_frg_viewer_plugin",
 ]
 
 [[package]]
@@ -3049,6 +3051,7 @@ name = "shader_frg_basic_time_globals"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "shader_frg_viewer_plugin",
 ]
 
 [[package]]
@@ -3056,17 +3059,11 @@ name = "shader_frg_basic_time_uniform"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "shader_frg_viewer_plugin",
 ]
 
 [[package]]
 name = "shader_frg_basic_vertex_control"
-version = "0.1.0"
-dependencies = [
- "bevy",
-]
-
-[[package]]
-name = "shader_frg_launcher"
 version = "0.1.0"
 dependencies = [
  "bevy",
@@ -3078,6 +3075,7 @@ version = "0.1.0"
 dependencies = [
  "bevy",
  "bevy_egui",
+ "shader_frg_viewer_plugin",
 ]
 
 [[package]]
@@ -3086,6 +3084,14 @@ version = "0.1.0"
 dependencies = [
  "bevy",
  "bevy_egui",
+ "shader_frg_viewer_plugin",
+]
+
+[[package]]
+name = "shader_frg_viewer_plugin"
+version = "0.1.0"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]

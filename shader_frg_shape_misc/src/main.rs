@@ -26,10 +26,10 @@ use bevy::{
     prelude::*,
     reflect::{TypePath, TypeUuid},
     render::render_resource::{AsBindGroup, ShaderRef},
-    sprite::{Material2d, Material2dPlugin, MaterialMesh2dBundle},
-    window::WindowResized,
+    sprite::Material2d,
 };
 use bevy_egui::{egui, EguiContexts, EguiPlugin};
+use shader_frg_viewer_plugin::ShaderViewerPlugin;
 use std::fs;
 
 const SHADER_CHOICE: &[ShaderInput] = &[
@@ -50,13 +50,10 @@ const SHADER_CHOICE: &[ShaderInput] = &[
 fn main() {
     App::new()
         .insert_resource(ShaderChoice(&SHADER_CHOICE[0]))
-        .add_plugins((
-            DefaultPlugins,
-            Material2dPlugin::<CustomMaterial>::default(),
-        ))
+        .add_plugins(DefaultPlugins)
+        .add_plugins(ShaderViewerPlugin::<CustomMaterial>::default())
         .add_plugins(EguiPlugin)
         .add_systems(Startup, setup_system)
-        .add_systems(Update, on_resize_system)
         .add_systems(Update, system_gui)
         .run();
 }
@@ -73,41 +70,15 @@ struct ShaderInput {
 #[derive(Resource)]
 struct ShaderChoice(&'static ShaderInput);
 
-#[derive(Component)]
-struct Canvas;
-
 fn setup_system(
-    mut commands: Commands,
     mut contexts: EguiContexts,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<CustomMaterial>>,
     shaders: ResMut<Assets<Shader>>,
     shader_choice: ResMut<ShaderChoice>,
 ) {
     contexts
         .ctx_mut()
         .set_visuals(egui::style::Visuals::light());
-    commands.spawn(Camera2dBundle::default());
-    commands
-        .spawn(MaterialMesh2dBundle {
-            mesh: meshes.add(Mesh::from(shape::Quad::default())).into(),
-            material: materials.add(CustomMaterial {}),
-            ..default()
-        })
-        .insert(Canvas);
     load_shader(&shader_choice, shaders)
-}
-
-fn on_resize_system(
-    mut q_transform: Query<&mut Transform, With<Canvas>>,
-    mut e_resize: EventReader<WindowResized>,
-) {
-    if e_resize.is_empty() {
-        return;
-    }
-    let size = e_resize.iter().next().unwrap();
-    let mut transform = q_transform.single_mut();
-    *transform = Transform::default().with_scale(Vec3::new(size.width, size.height, 1.0));
 }
 
 fn system_gui(
@@ -150,7 +121,7 @@ fn load_shader(shader_choice: &ShaderChoice, mut shaders: ResMut<Assets<Shader>>
     );
 }
 
-#[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone)]
+#[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone, Default)]
 #[uuid = "3bb72d82-d404-42e1-b225-2b1debd79518"]
 struct CustomMaterial {}
 

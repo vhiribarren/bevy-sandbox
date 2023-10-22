@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 bevy = "0.11.3"
 bevy_egui = "0.21.0"
+shader_frg_viewer_plugin = { path = "../shader_frg_viewer_plugin" }

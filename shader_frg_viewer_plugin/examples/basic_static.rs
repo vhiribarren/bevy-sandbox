@@ -32,6 +32,7 @@ use shader_frg_viewer_plugin::ShaderViewerPlugin;
 
 fn main() {
     App::new()
+        .add_plugins(DefaultPlugins)
         .add_plugins(ShaderViewerPlugin::<CustomMaterial>::default())
         .run();
 }

@@ -41,8 +41,7 @@ where
     M::Data: PartialEq + Eq + Hash + Clone,
 {
     fn build(&self, app: &mut App) {
-        app.add_plugins(DefaultPlugins)
-            .add_plugins(Material2dPlugin::<M>::default())
+        app.add_plugins(Material2dPlugin::<M>::default())
             .add_systems(Startup, setup_system::<M>)
             .add_systems(Update, on_resize_system);
     }
