@@ -3066,6 +3066,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "shader_frg_launcher"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
 name = "shader_frg_noise"
 version = "0.1.0"
 dependencies = [
