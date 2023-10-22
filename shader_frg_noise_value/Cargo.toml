@@ -1,5 +1,5 @@
 [package]
-name = "shader_frg_noise"
+name = "shader_frg_noise_value"
 version = "0.1.0"
 edition = "2021"
 
