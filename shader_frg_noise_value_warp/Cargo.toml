@@ -1,0 +1,12 @@
+[package]
+name = "shader_frg_noise_value_warp"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bevy = "0.11.3"
+bevy_egui = "0.21.0"
+shader_frg_plugin_viewer = { path = "../shader_frg_plugin_viewer" }
+shader_frg_plugin_lib = { path = "../shader_frg_plugin_lib" }

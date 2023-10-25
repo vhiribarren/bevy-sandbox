@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "shader_frg_plugin_viewer",
+    "shader_frg_plugin_lib",
     "shader_frg_basic_static",
     "shader_frg_basic_time_uniform",
     "shader_frg_basic_time_globals",
@@ -10,6 +11,7 @@ members = [
     "shader_frg_shape_misc",
     "shader_frg_noise_white",
     "shader_frg_noise_value",
+    "shader_frg_noise_value_warp",
     "anim_cube_displacement",
 ]
 resolver = "2"

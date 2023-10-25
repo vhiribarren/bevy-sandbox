@@ -3079,12 +3079,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "shader_frg_noise_value_warp"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_egui",
+ "shader_frg_plugin_lib",
+ "shader_frg_plugin_viewer",
+]
+
+[[package]]
 name = "shader_frg_noise_white"
 version = "0.1.0"
 dependencies = [
  "bevy",
  "bevy_egui",
  "shader_frg_plugin_viewer",
+]
+
+[[package]]
+name = "shader_frg_plugin_lib"
+version = "0.1.0"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]
