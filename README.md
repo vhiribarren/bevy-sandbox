@@ -1,5 +1,7 @@
 # Bevy sandbox
 
+![anim_cube_displacement](./animations/anim_cube_displacement/docs/anim_cube_displacement.png)
+
 ## About
 
 Various tests and samples with Bevy.
