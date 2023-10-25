@@ -29,12 +29,14 @@ use bevy::{
     sprite::Material2d,
 };
 use bevy_egui::{egui, EguiContexts, EguiPlugin};
+use shader_frg_plugin_lib::ShaderLibPlugin;
 use shader_frg_plugin_viewer::ShaderViewerPlugin;
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_plugins(ShaderViewerPlugin::<CustomMaterial>::default())
+        .add_plugins(ShaderLibPlugin)
         .add_plugins(EguiPlugin)
         .add_systems(Update, system_gui)
         .run();

@@ -3094,6 +3094,7 @@ version = "0.1.0"
 dependencies = [
  "bevy",
  "bevy_egui",
+ "shader_frg_plugin_lib",
  "shader_frg_plugin_viewer",
 ]
 
@@ -3109,6 +3110,15 @@ name = "shader_frg_plugin_viewer"
 version = "0.1.0"
 dependencies = [
  "bevy",
+]
+
+[[package]]
+name = "shader_frg_raymarch_basic"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "shader_frg_plugin_lib",
+ "shader_frg_plugin_viewer",
 ]
 
 [[package]]
