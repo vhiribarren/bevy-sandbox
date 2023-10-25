@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "shader_frg_viewer_plugin",
+    "shader_frg_plugin_viewer",
     "shader_frg_basic_static",
     "shader_frg_basic_time_uniform",
     "shader_frg_basic_time_globals",

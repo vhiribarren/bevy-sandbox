@@ -31,7 +31,7 @@ use bevy::{
     render::render_resource::{AsBindGroup, ShaderRef},
     sprite::Material2d,
 };
-use shader_frg_viewer_plugin::ShaderViewerPlugin;
+use shader_frg_plugin_viewer::ShaderViewerPlugin;
 
 fn main() {
     App::new()

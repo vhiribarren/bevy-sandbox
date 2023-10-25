@@ -31,7 +31,7 @@ use bevy::{
     sprite::Material2d,
     time::common_conditions::on_timer,
 };
-use shader_frg_viewer_plugin::ShaderViewerPlugin;
+use shader_frg_plugin_viewer::ShaderViewerPlugin;
 
 const DYNAMIC_SHADER_HANDLE: HandleUntyped =
     HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 13828845128402094821);

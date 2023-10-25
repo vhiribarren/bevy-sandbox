@@ -29,7 +29,7 @@ use bevy::{
     sprite::Material2d,
 };
 use bevy_egui::{egui, EguiContexts, EguiPlugin};
-use shader_frg_viewer_plugin::ShaderViewerPlugin;
+use shader_frg_plugin_viewer::ShaderViewerPlugin;
 use std::fs;
 
 const SHADER_CHOICE: &[ShaderInput] = &[
