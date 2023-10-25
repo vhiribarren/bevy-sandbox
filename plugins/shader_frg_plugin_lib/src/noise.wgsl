@@ -22,9 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#define_import_path alea_frg_lib::noise
+#define_import_path alea_sandbox_lib::noise
 
-#import alea_frg_lib::random random
+#import alea_sandbox_lib::random random
 
 
 fn average_noise_mix(scaled_uv: vec2<f32>) -> f32 {

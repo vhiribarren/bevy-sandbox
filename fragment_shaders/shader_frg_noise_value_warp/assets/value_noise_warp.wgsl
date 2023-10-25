@@ -1,6 +1,6 @@
 #import bevy_sprite::mesh2d_vertex_output  MeshVertexOutput
 #import bevy_sprite::mesh2d_view_bindings globals
-#import alea_frg_lib::noise average_noise_smoothstep
+#import alea_sandbox_lib::noise average_noise_smoothstep
 
 
 @group(1) @binding(0)

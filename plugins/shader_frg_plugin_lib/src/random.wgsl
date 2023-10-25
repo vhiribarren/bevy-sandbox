@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#define_import_path alea_frg_lib::random
+#define_import_path alea_sandbox_lib::random
 
 fn random (uv: vec2<f32>) -> f32 {
     return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
