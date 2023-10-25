@@ -1,5 +1,5 @@
 [package]
-name = "shader_frg_basic_dynamic_update"
+name = "shader_frg_shape_misc"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 bevy = "0.11.3"
-shader_frg_plugin_viewer = { path = "../shader_frg_plugin_viewer" }
+bevy_egui = "0.21.0"
+shader_frg_plugin_viewer = { path = "../../plugins/shader_frg_plugin_viewer" }

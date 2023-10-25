@@ -6,11 +6,11 @@ Various tests and samples with Bevy.
 
 It uses Cargo workplaces. You can launch each example with:
 
-    cargo run --bin <name of directory>
+    cargo run --release --bin <name of subproject>
 
 For instance:
 
-    cargo run --bin shader_basic_static
+    cargo run --release --bin shader_frg_basic_static
 
 ## Development
 
