@@ -66,10 +66,16 @@ fn on_resize_system(
     mut q_transform: Query<&mut Transform, With<Canvas>>,
     mut e_resize: EventReader<WindowResized>,
 ) {
-    if e_resize.is_empty() {
-        return;
+    for window_resized in e_resize.iter() {
+        info!(
+            "Resizing window to {}x{}",
+            window_resized.width, window_resized.height
+        );
+        let mut transform = q_transform.single_mut();
+        *transform = Transform::default().with_scale(Vec3::new(
+            window_resized.width,
+            window_resized.height,
+            1.0,
+        ));
     }
-    let size = e_resize.iter().next().unwrap();
-    let mut transform = q_transform.single_mut();
-    *transform = Transform::default().with_scale(Vec3::new(size.width, size.height, 1.0));
 }
