@@ -15,37 +15,76 @@ fn translate_coords(pos: vec3<f32>, translation: vec3<f32>) -> vec3<f32> {
     return pos - translation;
 }
 
-fn uv_to_righthanded_coords() {
-
-}
-
 const SCAN_MAX_RADIUS: f32 = 20.0;
 const SCAN_MIN_RADIUS: f32 = 0.001;
 const SCAN_MAX_STEPS: u32 = 200u;
 
-fn scene(pos: vec3<f32>) -> f32 {
-    var dist = SCAN_MAX_RADIUS;
-    dist = min(dist, sdf_sphere(translate_coords(pos, vec3(0., 0., -5.0)), 0.5));
-    dist = min(dist, sdf_plane(translate_coords(pos, vec3(0., -0.5, 0.0))));
-    return dist;
+const MATERIAL_SKY: u32 = 0u;
+const MATERIAL_RED: u32 = 1u;
+const MATERIAL_BLUE: u32 = 2u;
+
+fn materials(idx: u32) -> vec3<f32> {
+    switch idx {
+        case 0u: {
+            return vec3(0.2);
+        }
+        case 1u: {
+            return vec3(1., 0., 0.);
+        }
+        case 2u: {
+            return vec3(0., 0., 1.);
+        }
+        default: {
+            return vec3(1.);
+        }
+    }
 }
 
-fn raymarch(origin: vec3<f32>, direction: vec3<f32>) -> f32 {
+struct CollisionInfo {
+    distance: f32,
+    material_idx: u32,
+}
+
+fn min_collision(col_left: CollisionInfo, col_right: CollisionInfo) -> CollisionInfo {
+    if col_left.distance < col_right.distance {
+        return col_left;
+    }
+    return col_right;
+}
+
+fn scene_plane(pos: vec3<f32>) -> CollisionInfo {
+    return CollisionInfo(sdf_plane(translate_coords(pos, vec3(0., -0.5, 0.0))), MATERIAL_RED);
+}
+
+fn scene_sphere(pos: vec3<f32>) -> CollisionInfo {
+    return CollisionInfo(sdf_sphere(translate_coords(pos, vec3(0., 0., -5.0)), 0.5), MATERIAL_BLUE);
+}
+
+fn scene(pos: vec3<f32>) -> CollisionInfo {
+    let col_plane = scene_plane(pos);
+    let col_sphere = scene_sphere(pos);
+    return min_collision(col_plane, col_sphere);
+}
+
+fn raymarch(origin: vec3<f32>, direction: vec3<f32>) -> CollisionInfo {
     var total_dist = 0.0;
     var current_pos = origin;
     var norm_dir = normalize(direction);
+    var last_material_idx = 0u;
     for (var i = 0u; i < SCAN_MAX_STEPS; i++) {
-        let current_sdf = scene(current_pos);
+        let collision_info = scene(current_pos);
+        let current_sdf = collision_info.distance;
+        last_material_idx = collision_info.material_idx;
         if current_sdf > SCAN_MAX_RADIUS {
-            return SCAN_MAX_RADIUS;
+            return CollisionInfo(SCAN_MAX_RADIUS, MATERIAL_SKY);
         } else if current_sdf > SCAN_MIN_RADIUS {
             current_pos += current_sdf * norm_dir;
             total_dist += current_sdf;
         } else {
-            return total_dist;
+            break;
         }
     }
-    return total_dist;
+    return CollisionInfo(total_dist, last_material_idx);
 }
 
 @fragment
@@ -60,6 +99,7 @@ fn fragment(in: MeshVertexOutput) -> @location(0) vec4<f32> {
     let origin = vec3(pos, 0.0);
     let direction = origin - camera;
     // Ray marching
-    var val = 1.0-raymarch(origin, direction)/SCAN_MAX_RADIUS;
+    let collision_info = raymarch(origin, direction);
+    var val = materials(collision_info.material_idx);
     return vec4<f32>(vec3(val), 1.0);
 }
