@@ -77,6 +77,10 @@ fn collision_normal(pos: vec3<f32>) -> vec3<f32> {
     return normalize(normal);
 }
 
+fn global_light_intensity(pos: vec3<f32>, normal: vec3<f32>, light_direction_norm: vec3<f32>) -> f32 {
+    return clamp(dot(-normal, light_direction_norm), 0., 1.);
+}
+
 fn raymarch(origin: vec3<f32>, norm_dir: vec3<f32>) -> CollisionInfo {
     var total_dist = 0.0;
     var current_pos = origin;
@@ -105,17 +109,22 @@ fn fragment(in: MeshVertexOutput) -> @location(0) vec4<f32> {
     let centered_uv = in.uv - 0.5;
     let pos = centered_uv * vec2(ratio, -1.0);
     let camera = vec3(0.0, 0.0, 5.0);
+    // Lights
+    let global_light_dir: vec3<f32> = normalize(vec3(-0.5, -0.5, -0.5));
+    let global_light_val = 0.005;
     // Compute ray
     let canvas_point = vec3(pos, 0.0);
     let direction = normalize(canvas_point - camera);
     // Ray marching
     let collision_info = raymarch(camera, direction);
-    var val = vec3(0.0);
+    var light_coeff = 0.0;
     if collision_info.distance < SCAN_MAX_RADIUS {
-        let collision_point = camera + collision_info.distance * direction;
-        let collision_normal = collision_normal(collision_point);
-        val = collision_normal;
+        let collision_point: vec3<f32> = camera + collision_info.distance * direction;
+        let collision_normal: vec3<f32> = collision_normal(collision_point);
+        light_coeff += global_light_intensity(collision_point, collision_normal, global_light_dir);
+        light_coeff += global_light_val;
+        light_coeff = clamp(light_coeff, 0., 1.);
     }
-    //let val = materials(collision_info.material_idx);
-    return vec4<f32>(vec3(val), 1.0);
+    let color = light_coeff * materials(collision_info.material_idx);
+    return vec4<f32>(vec3(color), 1.0);
 }
