@@ -6,10 +6,10 @@ This work was done by watching the work of Inigo Quilez, in the following
 place: https://www.youtube.com/watch?v=Cfe5UQ-1L9Q
 
 The shader was written and adapted by me by watching the video tutorial for
-educational purpose. It largely copy line of codes displayed in the video and
-it reproduces a final piece of code implementing a work of art. As such,
-Inigo Quilez is the sole owner of this art work, you are not allow to use it
-unless the original author granted you his agreement.
+educational purpose. It largely copies line of codes displayed in the video
+and it reproduces a final piece of code implementing a work of art. As such,
+Inigo Quilez is the sole owner of this art work, you are not allowed to use
+it unless the original author granted you his agreement.
 
 Copyright owner: Inigo Quilez
 Website: https://iquilezles.org/

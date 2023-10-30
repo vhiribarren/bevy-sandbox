@@ -67,7 +67,7 @@ fn on_resize_system(
     mut e_resize: EventReader<WindowResized>,
 ) {
     for window_resized in e_resize.iter() {
-        info!(
+        debug!(
             "Resizing window to {}x{}",
             window_resized.width, window_resized.height
         );

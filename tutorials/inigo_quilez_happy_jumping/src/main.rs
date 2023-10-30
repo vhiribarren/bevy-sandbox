@@ -26,6 +26,7 @@ use std::time::Duration;
 
 use bevy::{
     asset::ChangeWatcher,
+    diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     prelude::*,
     reflect::{TypePath, TypeUuid},
     render::render_resource::{AsBindGroup, ShaderRef},
@@ -40,6 +41,7 @@ fn main() {
             watch_for_changes: ChangeWatcher::with_delay(Duration::from_secs(1)),
             ..Default::default()
         }))
+        .add_plugins((LogDiagnosticsPlugin::default(), FrameTimeDiagnosticsPlugin))
         .add_plugins(ShaderLibPlugin)
         .add_plugins(ShaderViewerPlugin::<CustomMaterial>::default())
         .run();
