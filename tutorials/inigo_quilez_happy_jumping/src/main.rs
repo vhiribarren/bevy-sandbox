@@ -44,15 +44,36 @@ fn main() {
         .add_plugins((LogDiagnosticsPlugin::default(), FrameTimeDiagnosticsPlugin))
         .add_plugins(ShaderLibPlugin)
         .add_plugins(ShaderViewerPlugin::<CustomMaterial>::default())
+        .add_systems(Update, input_keys)
         .run();
 }
 
 #[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone, Default)]
 #[uuid = "3bb72d82-d404-42e1-b225-2b1debd79518"]
-struct CustomMaterial {}
+struct CustomMaterial {
+    #[uniform(0)]
+    offset_horizontal: f32,
+}
 
 impl Material2d for CustomMaterial {
     fn fragment_shader() -> ShaderRef {
         "inigo_quilez_happy_jumping.wgsl".into()
+    }
+}
+
+fn input_keys(
+    input: Res<Input<KeyCode>>,
+    time: Res<Time>,
+    mut materials: ResMut<Assets<CustomMaterial>>,
+) {
+    for (_, material) in &mut materials.iter_mut() {
+        let mut offset_horizontal = 0.0;
+        if input.pressed(KeyCode::Left) {
+            offset_horizontal += -time.delta().as_secs_f32();
+        }
+        if input.pressed(KeyCode::Right) {
+            offset_horizontal += time.delta().as_secs_f32();
+        }
+        material.offset_horizontal += offset_horizontal;
     }
 }

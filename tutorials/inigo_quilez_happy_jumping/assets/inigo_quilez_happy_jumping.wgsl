@@ -36,6 +36,9 @@ var<uniform> globals: Globals;
 //#import alea_sandbox_lib::random random
 
 
+@group(1) @binding(0)
+var<uniform> offset_horizontal: f32;
+
 const RAYMARCHING_MAX_STEPS = 200u;
 const RAYMARCHING_RADIUS_MIN = 0.001;
 const RAYMARCHING_RADIUS_MAX = 20.0;
