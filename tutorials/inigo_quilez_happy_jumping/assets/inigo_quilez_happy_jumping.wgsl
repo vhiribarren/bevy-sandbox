@@ -44,10 +44,54 @@ const RAYMARCHING_RADIUS_MIN = 0.001;
 const RAYMARCHING_RADIUS_MAX = 20.0;
 const SHADOW_BIAS = 0.001;
 
+fn sdf_elipsoid(pos: vec3<f32>, radius: vec3<f32>) -> f32 {
+    let k0 = length(pos/radius);
+    let k1 = length(pos/radius/radius);
+    return k0*(k0 - 1.0)/k1;
+}
+
+fn sdf_sphere(pos: vec3<f32>, radius: f32) -> f32 {
+    return length(pos) - radius;
+}
+
+fn smooth_min(a: f32, b: f32, coeff: f32) -> f32 {
+    let h = max( coeff - abs(a-b), 0.0);
+    return min(a, b) - h*h/(coeff*4.0);
+}
+
+fn sdf_guy(pos: vec3<f32>) -> f32 {
+    let t = 0.5;//fract(globals.time);
+    let y = 4.0*t*(1.0-t);
+    //let dy = 4.0*(1.0- 2.0*t);
+    //let u = normalize(vec2(1.0, -dy));
+    //let v = vec2(dy, 1.0);
+    let center = vec3(0.0, y, 0.0);
+    let coeff_y = 0.5 + 0.5*y;
+    let coeff_z = 1.0/coeff_y;
+    let radius = vec3(0.25, 0.25*coeff_y, 0.25*coeff_z);
+    var body_pos = pos-center;
+    //q.yz = vec2(dot(u, q.yz), dot(v, q.yz));
+    //q.y = dot(u, q.yz);
+    //q.z = dot(v, q.yz);
+    // Body
+    let body =  sdf_elipsoid(body_pos, radius);
+    // Head
+    let head_pos = body_pos;//body_pos - vec3(0.0, 0.28, 0.0);
+    let head = sdf_elipsoid(head_pos - vec3(0.0, 0.28, 0.0), vec3(0.2));
+    let back_head = sdf_elipsoid(head_pos- vec3(0.0, 0.28, 0.1), vec3(0.2));
+    // Eye
+    let eye_left = sdf_sphere(head_pos - vec3(0.1, 0.25, 0.25), 0.05);
+    // Compute sdf result
+    var sdf_result = smooth_min(head, back_head, 0.03);
+    sdf_result = smooth_min(body, sdf_result, 0.1);
+    sdf_result = min(sdf_result, eye_left);
+    return sdf_result;
+}
+
 fn scene(pos: vec3<f32>) -> f32 {
-    let sphere_collision = length(pos) - 0.25;
+    let guy_collision = sdf_guy(pos);
     let floor_collision = pos.y + 0.25;
-    return min(sphere_collision, floor_collision);
+    return min(guy_collision, floor_collision);
 }
 
 fn collision_normal(pos: vec3<f32>) -> vec3<f32> {
@@ -84,12 +128,12 @@ fn fragment(in: MeshVertexOutput) -> @location(0) vec4<f32> {
     let ratio = size.x / size.y;
     // Shift coords to be in centered right-hand coordinates
     let centered_uv = in.uv - 0.5;
-    let canvas_pos = centered_uv * vec2(ratio, -1.0);
+    let canvas_pos = 2.0*centered_uv * vec2(ratio, -1.0);
     // Camera parameters
-    let cam_rotation_speed: f32 = 0.1 * globals.time;
-    let camera_eye = vec3(sin(cam_rotation_speed), 0.0, cos(cam_rotation_speed));
-    let camera_target = vec3(0.0, 0.0, 0.0);
-    let canvas_distance = 1.5;
+    let cam_rotation_speed: f32 = 1.5 * offset_horizontal;
+    let camera_target = vec3(0.0, 0.95, 0.0);
+    let camera_eye = camera_target + vec3(1.5*sin(cam_rotation_speed), 0.0, 1.5*cos(cam_rotation_speed));
+    let canvas_distance = 1.8;
     // Transform canvas coordinates
     let camera_axis_z = normalize(camera_target - camera_eye);
     let camera_axis_x = normalize(cross(camera_axis_z, vec3(0.0, 1.0, 0.0)));
