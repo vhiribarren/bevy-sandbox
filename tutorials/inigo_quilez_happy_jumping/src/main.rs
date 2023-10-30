@@ -1,41 +1,4 @@
-# Bevy sandbox
-
-![anim_cube_displacement](./animations/anim_cube_displacement/docs/anim_cube_displacement.png)
-
-## About
-
-Various tests and samples with Bevy.
-
-It uses Cargo workplaces. You can launch each example with:
-
-    cargo run --release --bin <name of subproject>
-
-For instance:
-
-    cargo run --release --bin shader_frg_basic_static
-
-## Development
-
-### Pre-commit hooks
-
-Some git [pre-commit] hooks are available. You can install them using:
-
-    $ pre-commit install
-
-[pre-commit]: https://pre-commit.com/
-
-## Third party licenses
-
-Some piece of code are largely inspired by the work of others not being in open
-source, and are not covered by the general license used here. Please be careful
-in the content of the files.
-
-It includes the following elements:
-
-- `/tutorials/inigo_quilez_*`
-
-## License
-
+/*
 MIT License
 
 Copyright (c) 2023 Vincent Hiribarren
@@ -57,3 +20,37 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+use std::time::Duration;
+
+use bevy::{
+    asset::ChangeWatcher,
+    prelude::*,
+    reflect::{TypePath, TypeUuid},
+    render::render_resource::{AsBindGroup, ShaderRef},
+    sprite::Material2d,
+};
+use shader_frg_plugin_lib::ShaderLibPlugin;
+use shader_frg_plugin_viewer::ShaderViewerPlugin;
+
+fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins.set(AssetPlugin {
+            watch_for_changes: ChangeWatcher::with_delay(Duration::from_secs(1)),
+            ..Default::default()
+        }))
+        .add_plugins(ShaderLibPlugin)
+        .add_plugins(ShaderViewerPlugin::<CustomMaterial>::default())
+        .run();
+}
+
+#[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone, Default)]
+#[uuid = "3bb72d82-d404-42e1-b225-2b1debd79518"]
+struct CustomMaterial {}
+
+impl Material2d for CustomMaterial {
+    fn fragment_shader() -> ShaderRef {
+        "inigo_quilez_happy_jumping.wgsl".into()
+    }
+}

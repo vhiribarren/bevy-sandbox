@@ -1996,6 +1996,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a257582fdcde896fd96463bf2d40eefea0580021c0712a0e2b028b60b47a837a"
 
 [[package]]
+name = "inigo_quilez_happy_jumping"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "shader_frg_plugin_lib",
+ "shader_frg_plugin_viewer",
+]
+
+[[package]]
 name = "inotify"
 version = "0.9.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"

@@ -1,40 +1,21 @@
-# Bevy sandbox
+# LICENSING
 
-![anim_cube_displacement](./animations/anim_cube_displacement/docs/anim_cube_displacement.png)
+## assets/inigo_quilez_happy_jumping.wgsl file
 
-## About
+This work was done by watching the work of Inigo Quilez, in the following
+place: https://www.youtube.com/watch?v=Cfe5UQ-1L9Q
 
-Various tests and samples with Bevy.
+The shader was written and adapted by me by watching the video tutorial for
+educational purpose. It largely copy line of codes displayed in the video and
+it reproduces a final piece of code implementing a work of art. As such,
+Inigo Quilez is the sole owner of this art work, you are not allow to use it
+unless the original author granted you his agreement.
 
-It uses Cargo workplaces. You can launch each example with:
+Copyright owner: Inigo Quilez
+Website: https://iquilezles.org/
 
-    cargo run --release --bin <name of subproject>
 
-For instance:
-
-    cargo run --release --bin shader_frg_basic_static
-
-## Development
-
-### Pre-commit hooks
-
-Some git [pre-commit] hooks are available. You can install them using:
-
-    $ pre-commit install
-
-[pre-commit]: https://pre-commit.com/
-
-## Third party licenses
-
-Some piece of code are largely inspired by the work of others not being in open
-source, and are not covered by the general license used here. Please be careful
-in the content of the files.
-
-It includes the following elements:
-
-- `/tutorials/inigo_quilez_*`
-
-## License
+## Other files
 
 MIT License
 

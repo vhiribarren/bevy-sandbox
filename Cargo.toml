@@ -3,5 +3,6 @@ members = [
     "animations/*",
     "fragment_shaders/*",
     "plugins/*",
+    "tutorials/*",
 ]
 resolver = "2"
