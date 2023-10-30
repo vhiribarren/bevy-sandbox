@@ -78,9 +78,10 @@ fn sdf_guy(pos: vec3<f32>) -> f32 {
     // Head
     let head_pos = body_pos;//body_pos - vec3(0.0, 0.28, 0.0);
     let head = sdf_elipsoid(head_pos - vec3(0.0, 0.28, 0.0), vec3(0.2));
-    let back_head = sdf_elipsoid(head_pos- vec3(0.0, 0.28, 0.1), vec3(0.2));
+    let back_head = sdf_elipsoid(head_pos- vec3(0.0, 0.28, -0.1), vec3(0.2));
     // Eye
-    let eye_left = sdf_sphere(head_pos - vec3(0.1, 0.25, 0.25), 0.05);
+    let xmirrored_head_pos = vec3(abs(head_pos.x), head_pos.yz);
+    let eye_left = sdf_sphere(xmirrored_head_pos - vec3(0.08, 0.28, 0.16), 0.05);
     // Compute sdf result
     var sdf_result = smooth_min(head, back_head, 0.03);
     sdf_result = smooth_min(body, sdf_result, 0.1);
